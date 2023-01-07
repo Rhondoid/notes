@@ -1,0 +1,34 @@
+<!-- //should receive a new note to save on the request body, and add to the db.json file, 
+// then return the new notes to the client. give each note a unique id when it is saved. NPM pkgs= npm i uuid --save. test file -->
+
+const tips = require('express').Router();
+const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
+const { v4: uuidv4 } = require('uuid');
+
+<!-- GET Route for retrieving all the notes -->
+notes.get('/', (req, res) => {
+  readFromFile('./db/notes.html').then((data) => res.json(JSON.parse(data)));
+});
+
+<!-- POST Route for a new UX/UI tip -->
+notes.post('/', (req, res) => {
+  console.log(req.body);
+
+  const { username, topic, tip } = req.body;
+
+  if (req.body) {
+    const newNote = {
+      username,
+      tip,
+      topic,
+      tip_id: uuidv4(),
+    };
+
+    readAndAppend(newNote, './db/tips.json');
+    res.json(`Tip added successfully 🚀`);
+  } else {
+    res.error('Error in adding tip');
+  }
+});
+
+module.exports = tips;

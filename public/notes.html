@@ -1,34 +1,49 @@
-<!-- //should receive a new note to save on the request body, and add to the db.json file, 
-// then return the new notes to the client. give each note a unique id when it is saved. NPM pkgs= npm i uuid --save. test file -->
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Note Taker</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.1.3/flatly/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
 
-const tips = require('express').Router();
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
-const { v4: uuidv4 } = require('uuid');
-
-<!-- GET Route for retrieving all the notes -->
-notes.get('/', (req, res) => {
-  readFromFile('./db/notes.html').then((data) => res.json(JSON.parse(data)));
-});
-
-<!-- POST Route for a new UX/UI tip -->
-notes.post('/', (req, res) => {
-  console.log(req.body);
-
-  const { username, topic, tip } = req.body;
-
-  if (req.body) {
-    const newNote = {
-      username,
-      tip,
-      topic,
-      tip_id: uuidv4(),
-    };
-
-    readAndAppend(newNote, './db/tips.json');
-    res.json(`Tip added successfully 🚀`);
-  } else {
-    res.error('Error in adding tip');
-  }
-});
-
-module.exports = tips;
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">Note Taker </a>
+      <div class="icons">
+        <i class="fas fa-save text-light save-note"></i>
+        <i class="fas fa-plus text-light new-note"></i>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 list-container">
+          <div class="card">
+            <ul class="list-group"></ul>
+          </div>
+        </div>
+        <div class="col-8">
+          <input
+            class="note-title"
+            placeholder="Note Title"
+            maxlength="28"
+            type="text"
+          />
+          <textarea class="note-textarea" placeholder="Note Text"></textarea>
+        </div>
+      </div>
+    </div>
+    <script src="/assets/js/index.js"></script>
+  </body>
+</html>
