@@ -1,6 +1,3 @@
-# Note Taker Starter Code
-On the back end, the application should include a `db.json` file that will be used to store and retrieve notes using the `fs` module.
-
 # Notes
 
 #Description
