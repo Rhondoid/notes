@@ -1,6 +1,6 @@
 const fs = require('fs');
 const util = require('util');
-const uuidv1 = require('uuid');
+const uuid = require('uuid').v4;
 
 // Promise version of fs.readFile
 const readFromFile = util.promisify(fs.readFile);
@@ -27,32 +27,22 @@ class Store{
         }
 
         return readNotes;})}
-//add note, remove note
+//add note, remove note. when testing add new note, use throw new error
     addNote(note) {
-        return this.write(note).then((newNote) =>{
-            let newNote;
+        const {title, text} = note;
+        if (!title || !text) {
+            throw new Error("add title and text")
+        }
+        const newNote = {title, text, id: uuid()}
 
-            try{
-                newNote = [].concat(JSON.stringify(newNote));
-            }catch(err){
-                newNote = []
-            }
-
-            return newNote;
-        })
+        return this.getNotes().then((notes) => [...notes, newNote])
+        .then((notesupdated)=>this.write(notesupdated))
+        .then(() => newNote)
     }
-    removeNote(){
-        return this.read().then((notes,'uuid') => {
-            let removedNote;
-
-            try{
-                removedNote = [].concat(JSON.parse(notes));
-            } catch(err){
-                removedNote = [];
-            }
-        return removedNote
-        })
+    removeNote(id){
+        return this.getNotes().then((notes) => notes.filter((note) => note.id !== id))
+        .then((noteRemoved) => this.write(noteRemoved))
     }
 }
 
-module.exports = {Store}
+module.exports = new Store()
